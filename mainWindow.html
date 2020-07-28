@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!-- Compiled and minified CSS -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
+    <head>
+        <title>ShoppingList</title>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="" class="brand-logo center">Shopping List</a>
+            </div>
+        </nav>
+
+        <ul id="list"></ul>
+        <p
+            class="codepen"
+            data-height="265"
+            data-theme-id="light"
+            data-default-tab="css,result"
+            data-user="azrielh"
+            data-slug-hash="pJWOwJ"
+            style="
+                height: 265px;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border: 2px solid;
+                margin: 1em 0;
+                padding: 1em;
+            "
+            data-pen-title="Electron - jsfiddle"
+        >
+            <span
+                >See the Pen
+                <a href="https://codepen.io/azrielh/pen/pJWOwJ">
+                    Electron - jsfiddle</a
+                >
+                by Azriel Hopkins (<a href="https://codepen.io/azrielh"
+                    >@azrielh</a
+                >) on <a href="https://codepen.io">CodePen</a>.</span
+            >
+        </p>
+        <script
+            async
+            src="https://static.codepen.io/assets/embed/ei.js"
+        ></script>
+        <script>
+            const electron = require("electron");
+            const { ipcRenderer } = electron;
+            const ul = document.getElementById("list");
+
+            //! Add Items
+            ipcRenderer.on("item:add", (e, item) => {
+                const li = document.createElement("li");
+                li.classList.add("collection-item");
+                const itemText = document.createTextNode(item);
+                li.appendChild(itemText);
+                ul.appendChild(li);
+                ul.classList.add("collection");
+            });
+
+            //Remove Item
+            ipcRenderer.on("item:clear", () => {
+                ul.innerHTML = "";
+                ul.classList.remove();
+            });
+
+            //Remove a single Item
+            ul.addEventListener("dblclick", removeItem);
+
+            function removeItem(e, item) {
+                e.target.remove();
+                if (ul.children.length == 0) {
+                    ul.classList.remove("collection");
+                }
+            }
+        </script>
+    </body>
+</html>
